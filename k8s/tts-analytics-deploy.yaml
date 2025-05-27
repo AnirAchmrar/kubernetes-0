@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: tts-analytics
+  name: tts-analytics
+  namespace: spring-boot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tts-analytics
+  template:
+    metadata:
+      labels:
+        app: tts-analytics
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - image: registry.hub.docker.com/${REPO_NAME}/ttsanalytics:latest
+          name: tts-analytics
+          ports:
+            - containerPort: 8090
+          resources:
+            requests:
+              cpu: 400m
+              memory: 100Mi
+            limits:
+              cpu: 1000m
+              memory: 500Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tts-analytics-svc
+  namespace: spring-boot
+spec:
+  type: ClusterIP
+  selector:
+    app: tts-analytics
+  ports:
+    - port: 8090
+      targetPort: 8090

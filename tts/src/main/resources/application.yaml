@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: tts
+server:
+  port: 8080
+tts:
+  output:
+    base-path: output
+  analyticsUrl: http://tts-analytics-svc.spring-boot.svc.cluster.local:8090/
